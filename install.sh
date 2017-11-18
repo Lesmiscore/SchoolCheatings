@@ -69,7 +69,7 @@ export MESSAGE_INSTALL_WHAT_Y="Would you like to install \"VAL1\"? (Y/n)"
 export MESSAGE_FINAL="Please open a new terminal, or run the following in the existing one:"
 export MESSAGE_DONE="All done!"
 
-LOCALLANG="$(read line)"
+read $LOCALLANG
 case "$LOCALLANG" in
   "en" ) echo "You chosen English." 
          export LANG=en_US.UTF-8 ;;
