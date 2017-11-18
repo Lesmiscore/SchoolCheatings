@@ -50,7 +50,7 @@ if ! [[ "bash" == "$0" ]]; then
   exit 1
 fi
 
-if [ -z $(which sed) ]; then
+if [ -z "$(which sed)" ]; then
   echo "Please install \"sed\" first: localization and some tasks won't work."
   exit 1
 fi
@@ -91,17 +91,17 @@ case "$LOCALLANG" in
 esac
 
 translate(){
-  echo $1 | sed -i "s/VAL1/$2/" | sed -i "s/VAL2/$3/" | sed -i "s/VAL3/$4/" | sed -i "s/VAL4/$5/" | sed -i "s/VAL5/$6/" | sed -i "s/VAL6/$7/" | sed -i "s/VAL7/$8/" | sed -i "s/VAL8/$9/"
+  echo "$1" | sed -i "s/VAL1/$2/" | sed -i "s/VAL2/$3/" | sed -i "s/VAL3/$4/" | sed -i "s/VAL4/$5/" | sed -i "s/VAL5/$6/" | sed -i "s/VAL6/$7/" | sed -i "s/VAL7/$8/" | sed -i "s/VAL8/$9/"
 }
 
-translate $MESSAGE_LOOKING_FOR unzip
-if [ -z $(which unzip) ]; then
+translate "$MESSAGE_LOOKING_FOR" unzip
+if [ -z "$(which unzip)" ]; then
   translate "$MESSAGE_PLEASE_INSTALL" unzip
   exit 0
 fi
 
-translate $MESSAGE_LOOKING_FOR wget
-if [ -z $(which unzip) ]; then
+translate "$MESSAGE_LOOKING_FOR" wget
+if [ -z "$(which unzip)" ]; then
   translate "$MESSAGE_PLEASE_INSTALL" wget
   exit 0
 fi
@@ -115,9 +115,9 @@ SCHOOL_CHEATINGS_DAT="$SCHOOL_CHEATINGS_DIR/dat"
 SCHOOL_CHEATINGS_PROG="$SCHOOL_CHEATINGS_DAT/programming"
 SCHOOL_CHEATINGS_VP="$SCHOOL_CHEATINGS_DAT/viaproxy"
 
-mkdir -p $SCHOOL_CHEATINGS_TMP $SCHOOL_CHEATINGS_BIN $SCHOOL_CHEATINGS_DAT $SCHOOL_CHEATINGS_PROG $SCHOOL_CHEATINGS_VP
+mkdir -p "$SCHOOL_CHEATINGS_TMP" "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_DAT" "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_VP"
 
-echo $LOCALLANG > "$SCHOOL_CHEATINGS_DAT/lang"
+echo "$LOCALLANG" > "$SCHOOL_CHEATINGS_DAT/lang"
 
 REPO="https://github.com/nao20010128nao/SchoolCheatings/"
 BASHRC="${HOME}/.bashrc"
@@ -129,36 +129,38 @@ EOF
 
 echo "$MESSAGE_ATTEMPT_BASHRC"
 touch "$BASHRC"
-if [[ -z $(grep 'school-cheatings-init.sh' "$BASHRC") ]]; then
+if ! grep -q 'school-cheatings-init.sh' "$BASHRC"; then
   echo -e "\n$SCHOOL_CHEATINGS_INIT" >> "$BASHRC"
   translate "$MESSAGE_ADDED_BASHRC" "$BASHRC"
 fi
 
-translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_BASE"
+translate "$MESSAGE_DOWNLOADING_WHAT" "$MESSAGE_BASE"
 wget -qO "$SCHOOL_CHEATINGS_TMP/init.zip" "$REPO/archive/init.sh"
 unzip -qjo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/init.zip"
 
 programming(){
-  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROGRAMMING"
+  translate "$MESSAGE_DOWNLOADING_WHAT" "$MESSAGE_PROGRAMMING"
   wget -qO "$SCHOOL_CHEATINGS_TMP/programming.zip" "$REPO/archive/programming.zip"
   unzip -qjo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
 }
 
 translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROGRAMMING"
-case "$(read line)" in
+read -r line
+case "$line" in
   "N" | "n" ) true ;;
   * ) programming ;;
 esac
  
 viaproxy(){
-  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROXIED_COMMAND"
+  translate "$MESSAGE_DOWNLOADING_WHAT" "$MESSAGE_PROXIED_COMMAND"
   wget -qO "$SCHOOL_CHEATINGS_TMP/viaproxy.zip" "$REPO/archive/viaproxy.zip"
   unzip -qo "$SCHOOL_CHEATINGS_DAT" "$SCHOOL_CHEATINGS_TMP/viaproxy.zip"
   mv SchoolCheatings-viaproxy viaproxy
 }
 
 translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROXIED_COMMAND"
-case "$(read line)" in
+read -r line
+case "$line" in
   "N" | "n" ) true ;;
   * ) viaproxy ;;
 esac
