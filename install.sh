@@ -71,7 +71,7 @@ export MESSAGE_DONE="All done!"
 
 read -r LOCALLANG
 case "$LOCALLANG" in
-  "en" ) echo "You chosen English." 
+  "en" ) echo "You chose English." 
          export LANG=en_US.UTF-8 ;;
   "ja" ) echo "日本語を選択しました。" 
          export LANG=ja_JP.UTF-8 
