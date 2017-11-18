@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ $LESMI_HTTP_PROXY == "" ]] ; then
+  echo "WARN: You have to specify LESMI_HTTP_PROXY environment variable before using this command."
+  SSH_BIN $@
+else
+  SSH_BIN -o ProxyCommand="nc -X connect -x $LESMI_HTTP_PROXY %h %p" $@
+fi
+
