@@ -113,8 +113,9 @@ SCHOOL_CHEATINGS_TMP="$SCHOOL_CHEATINGS_DIR/tmp"
 SCHOOL_CHEATINGS_BIN="$SCHOOL_CHEATINGS_DIR/bin"
 SCHOOL_CHEATINGS_DAT="$SCHOOL_CHEATINGS_DIR/dat"
 SCHOOL_CHEATINGS_PROG="$SCHOOL_CHEATINGS_DAT/programming"
+SCHOOL_CHEATINGS_VP="$SCHOOL_CHEATINGS_DAT/viaproxy"
 
-mkdir -p $SCHOOL_CHEATINGS_TMP $SCHOOL_CHEATINGS_BIN $SCHOOL_CHEATINGS_DAT $SCHOOL_CHEATINGS_PROG
+mkdir -p $SCHOOL_CHEATINGS_TMP $SCHOOL_CHEATINGS_BIN $SCHOOL_CHEATINGS_DAT $SCHOOL_CHEATINGS_PROG $SCHOOL_CHEATINGS_VP
 
 echo $LOCALLANG > "$SCHOOL_CHEATINGS_DAT/lang"
 
@@ -135,25 +136,12 @@ else
 
 translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_BASE"
 wget -qO "$SCHOOL_CHEATINGS_TMP/init.zip" "$REPO/archive/init.sh"
-unzip -qo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/init.zip"
+unzip -qjo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/init.zip"
 
 programming(){
   translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROGRAMMING"
   wget -qO "$SCHOOL_CHEATINGS_TMP/programming.zip" "$REPO/archive/programming.zip"
-  unzip -qo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
-}
-
-translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROGRAMMING"
-case "$(read line)" in
-  "N" | "n" ) true ;;
-  * ) programming ;;
-esac
-
-
-programming(){
-  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROGRAMMING"
-  wget -qO "$SCHOOL_CHEATINGS_TMP/programming.zip" "$REPO/archive/programming.zip"
-  unzip -qo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
+  unzip -qjo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
 }
 
 translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROGRAMMING"
@@ -165,7 +153,8 @@ esac
 viaproxy(){
   translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROXIED_COMMAND"
   wget -qO "$SCHOOL_CHEATINGS_TMP/viaproxy.zip" "$REPO/archive/viaproxy.zip"
-  unzip -qo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/viaproxy.zip"
+  unzip -qo "$SCHOOL_CHEATINGS_DAT" "$SCHOOL_CHEATINGS_TMP/viaproxy.zip"
+  mv SchoolCheatings-viaproxy viaproxy
 }
 
 translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROXIED_COMMAND"
