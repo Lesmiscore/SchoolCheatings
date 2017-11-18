@@ -71,10 +71,10 @@ export MESSAGE_DONE="All done!"
 
 LOCALLANG="$(read line)"
 case "$LOCALLANG" in
-  "en" ) echo "You chosen English." 
+  "en" ) echo "You chosen English."
          export LANG=en_US.UTF-8 ;;
-  "ja" ) echo "日本語を選択しました。" 
-         export LANG=ja_JP.UTF-8 
+  "ja" ) echo "日本語を選択しました。"
+         export LANG=ja_JP.UTF-8
          export MESSAGE_LOOKING_FOR="\"VAL1\"を探しています。"
          export MESSAGE_PLEASE_INSTALL="\"VAL1\"コマンドが見つかりませんでした。\"VAL1\"をインストール後に再度お試し下さい。"
          export MESSAGE_ATTEMPT_BASHRC="bashプロファイルの書き換え中..."
