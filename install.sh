@@ -69,9 +69,9 @@ export MESSAGE_INSTALL_WHAT_Y="Would you like to install \"VAL1\"? (Y/n)"
 export MESSAGE_FINAL="Please open a new terminal, or run the following in the existing one:"
 export MESSAGE_DONE="All done!"
 
-LOCALLANG="$(read line)"
+read -r LOCALLANG
 case "$LOCALLANG" in
-  "en" ) echo "You chosen English."
+  "en" ) echo "You chose English."
          export LANG=en_US.UTF-8 ;;
   "ja" ) echo "日本語を選択しました。"
          export LANG=ja_JP.UTF-8
@@ -132,7 +132,7 @@ touch "$BASHRC"
 if [[ -z $(grep 'school-cheatings-init.sh' "$BASHRC") ]]; then
   echo -e "\n$SCHOOL_CHEATINGS_INIT" >> "$BASHRC"
   translate "$MESSAGE_ADDED_BASHRC" "$BASHRC"
-else
+fi
 
 translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_BASE"
 wget -qO "$SCHOOL_CHEATINGS_TMP/init.zip" "$REPO/archive/init.sh"
