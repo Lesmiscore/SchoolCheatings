@@ -62,10 +62,15 @@ export MESSAGE_PLEASE_INSTALL="\"VAL1\" is not found on the system. Please resta
 export MESSAGE_ATTEMPT_BASHRC="Attempt update of interactive bash profile..."
 export MESSAGE_ADDED_BASHRC="Added sdkman init snippet to \"VAL1\""
 export MESSAGE_DOWNLOADING_WHAT="Downloading \"VAL1\"..."
-export MESSAGE_DOWNLOADING_PROXIED_COMMAND="proxied command"
-export MESSAGE_DOWNLOADING_PROGRAMMING="programming kit"
+export MESSAGE_PROXIED_COMMAND="proxied command"
+export MESSAGE_PROGRAMMING="programming kit"
+export MESSAGE_BASE="the base"
+export MESSAGE_INSTALL_WHAT_Y="Would you like to install \"VAL1\"? (Y/n)"
+export MESSAGE_FINAL="Please open a new terminal, or run the following in the existing one:"
+export MESSAGE_DONE="All done!"
 
-case "$(read line)" in
+LOCALLANG="$(read line)"
+case "$LOCALLANG" in
   "en" ) echo "You chosen English." 
          export LANG=en_US.UTF-8 ;;
   "ja" ) echo "日本語を選択しました。" 
@@ -75,8 +80,12 @@ case "$(read line)" in
          export MESSAGE_ATTEMPT_BASHRC="bashプロファイルの書き換え中..."
          export MESSAGE_ADDED_BASHRC="\"VAL1\"に起動スクリプトを挿入しました。"
          export MESSAGE_DOWNLOADING_WHAT="\"VAL1\"をダウンロードしています。"
-         export MESSAGE_DOWNLOADING_PROXIED_COMMAND="プロキシ設定済みコマンド"
-         export MESSAGE_DOWNLOADING_PROGRAMMING="プログラミングキット" ;;
+         export MESSAGE_PROXIED_COMMAND="プロキシ設定済みコマンド"
+         export MESSAGE_PROGRAMMING="プログラミングキット"
+         export MESSAGE_BASE="基礎"
+         export MESSAGE_INSTALL_WHAT_Y="\"VAL1\"をインストールしますか? (Y/n)"
+         export MESSAGE_FINAL="新しくターミナルを開くか、以下のコマンドを入力すれば使えるようになります。"
+         export MESSAGE_DONE="完了!" ;;
   "*"  ) echo "No language specified."
          echo "All messages from this script will be displayed in English." ;;
 esac
@@ -102,6 +111,12 @@ if [ -z "$SCHOOL_CHEATINGS_DIR" ]; then
 fi
 SCHOOL_CHEATINGS_TMP="$SCHOOL_CHEATINGS_DIR/tmp"
 SCHOOL_CHEATINGS_BIN="$SCHOOL_CHEATINGS_DIR/bin"
+SCHOOL_CHEATINGS_DAT="$SCHOOL_CHEATINGS_DIR/dat"
+SCHOOL_CHEATINGS_PROG="$SCHOOL_CHEATINGS_DAT/programming"
+
+mkdir -p $SCHOOL_CHEATINGS_TMP $SCHOOL_CHEATINGS_BIN $SCHOOL_CHEATINGS_DAT
+
+echo $LOCALLANG > "$SCHOOL_CHEATINGS_DAT/lang"
 
 REPO="https://github.com/nao20010128nao/SchoolCheatings/"
 BASHRC="${HOME}/.bashrc"
@@ -118,11 +133,54 @@ if [[ -z $(grep 'school-cheatings-init.sh' "$BASHRC") ]]; then
   translate "$MESSAGE_ADDED_BASHRC" "$BASHRC"
 else
 
-# Imcomplete
+translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_BASE"
+wget -qO "$SCHOOL_CHEATINGS_TMP/init.zip" "$REPO/archive/init.sh"
+unzip -qo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/init.zip"
+
+programming(){
+  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROGRAMMING"
+  wget -qO "$SCHOOL_CHEATINGS_TMP/programming.zip" "$REPO/archive/programming.zip"
+  unzip -qo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
+}
+
+translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROGRAMMING"
+case "$(read line)" in
+  "N" | "n" ) true ;;
+  * ) programming ;;
+esac
 
 
+programming(){
+  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROGRAMMING"
+  wget -qO "$SCHOOL_CHEATINGS_TMP/programming.zip" "$REPO/archive/programming.zip"
+  unzip -qo "$SCHOOL_CHEATINGS_PROG" "$SCHOOL_CHEATINGS_TMP/programming.zip"
+}
+
+translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROGRAMMING"
+case "$(read line)" in
+  "N" | "n" ) true ;;
+  * ) programming ;;
+esac
+ 
+viaproxy(){
+  translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_PROXIED_COMMAND"
+  wget -qO "$SCHOOL_CHEATINGS_TMP/viaproxy.zip" "$REPO/archive/viaproxy.zip"
+  unzip -qo "$SCHOOL_CHEATINGS_BIN" "$SCHOOL_CHEATINGS_TMP/viaproxy.zip"
+}
+
+translate "$MESSAGE_INSTALL_WHAT_Y" "$MESSAGE_PROXIED_COMMAND"
+case "$(read line)" in
+  "N" | "n" ) true ;;
+  * ) viaproxy ;;
+esac
+
+echo -e "\n\n\n$MESSAGE_DONE\n\n"
+
+echo "$MESSAGE_FINAL"
+echo ""
+echo "    source \"$SCHOOL_CHEATINGS_BIN/school-cheatings-init.sh\""
 
 
-
+rm -rf "$SCHOOL_CHEATINGS_TMP"
 
 
