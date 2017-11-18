@@ -132,7 +132,7 @@ touch "$BASHRC"
 if [[ -z $(grep 'school-cheatings-init.sh' "$BASHRC") ]]; then
   echo -e "\n$SCHOOL_CHEATINGS_INIT" >> "$BASHRC"
   translate "$MESSAGE_ADDED_BASHRC" "$BASHRC"
-else
+fi
 
 translate "$MESSAGE_DOWNLOAD_WHAT" "$MESSAGE_BASE"
 wget -qO "$SCHOOL_CHEATINGS_TMP/init.zip" "$REPO/archive/init.sh"
